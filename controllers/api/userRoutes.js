@@ -17,7 +17,9 @@ router.post("/", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json(err);
+    res
+      .status(500)
+      .json(err, { message: "password must be at least 8 characters" });
   }
 });
 
@@ -55,7 +57,9 @@ router.post("/login", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json(err);
+    res
+      .status(500)
+      .json(err, { message: "Please enter a valid email and password" });
   }
 });
 

@@ -263,5 +263,10 @@ router.all("/login", (req, res) => {
   res.render("login");
 });
 
+//signup
+router.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
 // Export
 module.exports = router;

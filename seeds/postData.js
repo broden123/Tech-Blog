@@ -1,9 +1,9 @@
 const { Post } = require("../models");
 
-const reviewdata = [
+const postdata = [
   // todo
 ];
 
-const seedPosts = () => Post.bulkCreate(reviewdata);
+const seedPosts = () => Post.bulkCreate(postdata);
 
 module.exports = seedPosts;
