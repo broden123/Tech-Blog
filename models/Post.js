@@ -15,7 +15,7 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    post_body: {
       type: DataTypes.STRING,
     },
     date_created: {
