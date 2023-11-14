@@ -31,7 +31,7 @@ N/A
 
 ## Questions
 
-Email: Brayden.smithzimmerman@gmail.com
-Github Profile: [Github](https://github.com/broden123)
+- Email: Brayden.smithzimmerman@gmail.com
+- Github Profile: [Github](https://github.com/broden123)
 
 ## Preview
