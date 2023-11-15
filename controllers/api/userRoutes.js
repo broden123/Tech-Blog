@@ -48,12 +48,17 @@ router.post("/login", async (req, res) => {
       return;
     }
 
-    req.session.save(() => {
-      req.session.loggedIn = true;
+    req.session.save((err) => {
+      req.session.logged_in = true;
+      req.session.user_id = dbUserData.id;
+      console.log(req.session);
+      if (err) {
+        console.error("Error saving session:", err);
+      } else {
+        console.log("Session saved successfully");
+      }
 
-      res
-        .status(200)
-        .json({ user: dbUserData, message: "You are now logged in!" });
+      res.status(200).redirect("/dashboard");
     });
   } catch (err) {
     console.log(err);

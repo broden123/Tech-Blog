@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
         },
       ],
     });
-    const Posts = PostData.map((post) => Post.get({ plain: true }));
+    const Posts = PostData.map((post) => post.get({ plain: true }));
     res.render("homepage", {
       Posts,
       logged_in: req.session.logged_in,
@@ -73,10 +73,10 @@ router.get("/dashboard", getAuth, async (req, res) => {
       ],
     });
 
-    const blogposts = postData.map((post) => post.get({ plain: true }));
+    const posts = postData.map((post) => post.get({ plain: true }));
 
     res.render("dashboard", {
-      blogposts,
+      posts,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
@@ -177,7 +177,7 @@ router.post("/comment/:id", getAuth, async (req, res) => {
 });
 
 //update post by id path page render
-router.get("/post/:id", getAuth, async (req, res) => {
+router.get("/update/:id", getAuth, async (req, res) => {
   try {
     const postData = await Post.findAll({
       include: [

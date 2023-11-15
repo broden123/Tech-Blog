@@ -13,11 +13,10 @@ const hbs = exphbs.create({ helpers });
 const sess = {
   secret: "Super secret secret",
   cookie: {
-    // Stored in milliseconds
     maxAge: 24 * 60 * 60 * 1000, // expires after 1 day
     httpOnly: true,
     secure: false,
-    sameSite: 'strict'
+    sameSite: "strict",
   },
   resave: false,
   saveUninitialized: true,
@@ -29,16 +28,17 @@ const sess = {
 app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
+app.use(session(sess));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session(sess));
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () =>
     console.log(
-      `\nServer running on port ${PORT}. Visit http://localhost:${PORT} `
+      `Server running on port ${PORT}. Visit http://localhost:${PORT}`
     )
   );
 });

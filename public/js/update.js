@@ -2,13 +2,13 @@ const updateFormHandler = async (event) => {
   event.preventDefault();
 
   const title = document.querySelector("#title").value.trim();
-  const post_id = document.querySelector("#post").value.trim();
+  const post_body = document.querySelector("#post").value.trim();
   const id = document.querySelector("#blogpost").dataset.indexNumber;
-  if (title && post_id) {
+  if (title && post_body) {
     // put update for post
     const response = await fetch(`/update/${id}`, {
       method: "PUT",
-      body: JSON.stringify({ title, post_id }),
+      body: JSON.stringify({ title, post_body }),
       headers: { "Content-Type": "application/json" },
     });
 

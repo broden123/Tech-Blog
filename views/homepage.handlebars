@@ -1,14 +1,14 @@
-{{#each posts as |post|}}
+{{#each posts}}
   <div class="card py-2">
     <div class="card-header">
-      posted by:
-      {{post.user.username}}
+      posted by
+      {{user.username}}
       on
-      {{format_date post.date_created}}
+      {{format_date date_created}}
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{post.title}}</h5>
-      <p class="card-text">{{post.post_body}}</p>
+      <h5 class="card-title">{{title}}</h5>
+      <p class="card-text">{{post_body}}</p>
       <a href="/comment/{{post.id}}" class="btn btn-primary">View / Add Comments</a>
     </div>
   </div>
