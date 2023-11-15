@@ -9,7 +9,17 @@
     <div class="card-body">
       <h5 class="card-title">{{title}}</h5>
       <p class="card-text">{{post_body}}</p>
-      <a href="/comment/{{post.id}}" class="btn btn-primary">View / Add Comments</a>
+
+      <!-- Display comments -->
+      <div class="comments">
+        <h6>Comments:</h6>
+        {{#each comments}}
+          <p>{{this.comment_body}} - {{this.user.username}}</p>
+        {{/each}}
+      </div>
+
+      <!-- Link to add a comment -->
+      <a href="/comment/{{id}}" class="btn btn-primary">Add Comment</a>
     </div>
   </div>
 {{/each}}

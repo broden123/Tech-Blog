@@ -2,36 +2,10 @@ const router = require("express").Router();
 const { Post, User, Comment } = require("../models");
 const getAuth = require("../utils/auth");
 
-// get all posts
+// get all posts and comments on homepage
 router.get("/", async (req, res) => {
   try {
-    const PostData = await Post.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ["username"],
-        },
-        {
-          model: Comment,
-          attributes: ["comment_body"],
-        },
-      ],
-    });
-    const Posts = PostData.map((post) => post.get({ plain: true }));
-    res.render("homepage", {
-      Posts,
-      logged_in: req.session.logged_in,
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json(err);
-  }
-});
-
-// get one post
-router.get("/post/:id", getAuth, async (req, res) => {
-  try {
-    const PostData = await Post.findByPk(req.params.id, {
+    const postData = await Post.findAll({
       include: [
         {
           model: User,
@@ -44,10 +18,9 @@ router.get("/post/:id", getAuth, async (req, res) => {
       ],
     });
 
-    const Post = PostData.get({ plain: true });
-
-    res.render("Post", {
-      ...Post,
+    const posts = postData.map((post) => post.get({ plain: true }));
+    res.render("homepage", {
+      posts,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
@@ -161,18 +134,48 @@ router.post("/newpost", getAuth, async (req, res) => {
   }
 });
 
-// post comment
-router.post("/comment/:id", getAuth, async (req, res) => {
+// post comment page render
+router.get("/comment/:id", getAuth, async (req, res) => {
   try {
-    const commentData = await Comment.create({
-      comment_body: req.body.comment_body,
-      user_id: req.session.user_id,
-      post_id: req.body.post_id,
+    // Fetch the post data for which the comment is being added
+    const postData = await Post.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ["username"],
+        },
+      ],
     });
 
-    res.status(200).json(commentData);
+    const post = postData.get({ plain: true });
+
+    res.render("add-comment", {
+      post,
+      logged_in: req.session.logged_in,
+    });
   } catch (err) {
-    res.status(500).json(err, { message: "No post with that Id found!" });
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+//post comment
+router.post("/api/comment/:id", getAuth, async (req, res) => {
+  try {
+    const user_id = req.session.user_id;
+    const { comment_body } = req.body;
+    const post_id = req.params.id;
+
+    const commentData = await Comment.create({
+      comment_body,
+      user_id,
+      post_id,
+    });
+
+    res.status(201).json(commentData);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to add comment!" });
   }
 });
 
@@ -193,10 +196,8 @@ router.get("/update/:id", getAuth, async (req, res) => {
       ],
     });
 
-    // Serialize data so the template can read it
     const posts = postData.map((post) => post.get({ plain: true }));
 
-    // Pass serialized data and session flag into template
     res.render("update", {
       posts,
       logged_in: req.session.logged_in,
