@@ -1,22 +1,26 @@
-<a href="/newpost" class="mt-5 btn btn-primary">Add a New Post</a>
+{{#if loggedIn}}
+  <a href="/newpost" class="mt-5 btn btn-primary">Add a New Post</a>
 
-{{#each posts as |post|}}
+  {{#each posts as |post|}}
 
-  <div class="card py-2">
-    <div class="card-header">
-      posted by
-      {{post.user.username}}
-      on
-      {{format_date post.date_created}}
+    <div class="card py-2">
+      <div class="card-header">
+        posted by
+        {{post.user.username}}
+        on
+        {{format_date post.date_created}}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{post.title}}</h5>
+        <p class="card-text">{{post.post_body}}</p>
+        <a
+          href="/update/{{post.id}}"
+          class="btn btn-primary blogpost{{post.id}}"
+        >Edit Post</a>
+
+      </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">{{post.title}}</h5>
-      <p class="card-text">{{post.post_body}}</p>
-      <a
-        href="/update/{{post.id}}"
-        class="btn btn-primary blogpost{{post.id}}"
-      >Edit Post</a>
-
-    </div>
-  </div>
-{{/each}}
+  {{/each}}
+{{else}}
+  <a href="/login">You must login first to view this page!</a>
+{{/if}}

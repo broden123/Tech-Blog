@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
         },
       ],
     });
-    const Posts = PostData.map((Post) => Post.get({ plain: true }));
+    const Posts = PostData.map((post) => Post.get({ plain: true }));
     res.render("homepage", {
       Posts,
       logged_in: req.session.logged_in,
@@ -59,15 +59,11 @@ router.get("/post/:id", getAuth, async (req, res) => {
 // get dashboard
 router.get("/dashboard", getAuth, async (req, res) => {
   try {
-    const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ["password"] },
+    const postData = await Post.findAll({
       include: [
         {
-          model: Post,
-          include: [User],
-        },
-        {
-          model: Comment,
+          model: User,
+          attributes: ["username"],
         },
       ],
       where: [
@@ -77,11 +73,11 @@ router.get("/dashboard", getAuth, async (req, res) => {
       ],
     });
 
-    const user = userData.get({ plain: true });
+    const blogposts = postData.map((post) => post.get({ plain: true }));
 
     res.render("dashboard", {
-      ...user,
-      logged_in: true,
+      blogposts,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -151,9 +147,9 @@ router.get("/newpost", getAuth, async (req, res) => {
 router.post("/newpost", getAuth, async (req, res) => {
   try {
     const postData = await Post.create({
-      user_id: req.session.user_id,
       title: req.body.title,
       post_body: req.body.post_body,
+      user_id: req.session.user_id,
     });
     if (!postData) {
       res.status(404).json({ message: "Could not create post" });
