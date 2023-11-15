@@ -13,7 +13,7 @@
 
 ## Description
 
-THis application is a simple blog with the ability to add/create posts. It has user auth with the ability to sign up for an account and login. Further development is to get the comment functionality working and further styling!
+This application is a simple blog with the ability to add/create posts. It has user auth with the ability to sign up for an account and login. Further development is to get the comment functionality working and further styling!
 
 ## Installation
 
